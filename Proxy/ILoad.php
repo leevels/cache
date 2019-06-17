@@ -18,47 +18,37 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cache\Helper;
-
-use Leevel\Cache\ICache;
-use Leevel\Di\Container;
+namespace Leevel\Cache\Proxy;
 
 /**
- * cache 服务
+ * 代理 cache.load 接口.
  *
- * @return \Leevel\Cache\ICache
+ * @author Xiangmin Liu <635750556@qq.com>
+ *
+ * @since 2019.06.05
+ *
+ * @version 1.0
+ *
+ * @see \Leevel\Cache\ILoad 请保持接口设计的一致性
  */
-function cache(): ICache
+interface ILoad
 {
-    return Container::singletons()->make('caches');
-}
+    /**
+     * 载入缓存数据
+     * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
+     *
+     * @param array $names
+     * @param array $option
+     * @param bool  $force
+     *
+     * @return array
+     */
+    public static function data(array $names, array $option = [], bool $force = false): array;
 
-/**
- * 获取 cache 值
- *
- * @param string     $key
- * @param null|mixed $defaults
- * @param array      $option
- *
- * @return mixed
- */
-function cache_get(string $key, $defaults = null, array $option = [])
-{
-    return cache()->get($key, $defaults, $option);
-}
-
-/**
- * 设置 cache 值
- *
- * @param array|string $key
- * @param null|mixed   $value
- * @param array        $option
- */
-function cache_set($key, $value = null, array $option = []): void
-{
-    cache()->put($key, $value, $option);
-}
-
-class cache
-{
+    /**
+     * 刷新缓存数据.
+     *
+     * @param array $names
+     */
+    public static function refresh(array $names): void;
 }

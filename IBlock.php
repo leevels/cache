@@ -18,47 +18,41 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cache\Helper;
-
-use Leevel\Cache\ICache;
-use Leevel\Di\Container;
+namespace Leevel\Cache;
 
 /**
- * cache 服务
+ * 缓冲块接口.
  *
- * @return \Leevel\Cache\ICache
+ * @author Xiangmin Liu <635750556@qq.com>
+ *
+ * @since 2019.05.26
+ *
+ * @version 1.0
  */
-function cache(): ICache
+interface IBlock
 {
-    return Container::singletons()->make('caches');
-}
+    /**
+     * 响应.
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public function handle(array $params = []): array;
 
-/**
- * 获取 cache 值
- *
- * @param string     $key
- * @param null|mixed $defaults
- * @param array      $option
- *
- * @return mixed
- */
-function cache_get(string $key, $defaults = null, array $option = [])
-{
-    return cache()->get($key, $defaults, $option);
-}
+    /**
+     * 缓存驱动.
+     *
+     * @return \Leevel\Cache\ICache
+     */
+    public function cache(): ICache;
 
-/**
- * 设置 cache 值
- *
- * @param array|string $key
- * @param null|mixed   $value
- * @param array        $option
- */
-function cache_set($key, $value = null, array $option = []): void
-{
-    cache()->put($key, $value, $option);
-}
-
-class cache
-{
+    /**
+     * 缓存 key.
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    public static function key(array $params = []): string;
 }
