@@ -18,37 +18,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cache\Proxy;
+namespace Leevel\Cache\Helper;
+
+use Leevel\Di\Container;
 
 /**
- * 代理 cache.load 接口.
+ * 获取 cache 值
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param string     $key
+ * @param null|mixed $defaults
+ * @param array      $option
  *
- * @since 2019.06.05
- *
- * @version 1.0
- *
- * @see \Leevel\Cache\ILoad 请保持接口设计的一致性
+ * @return mixed
  */
-interface ILoad
+function cache_get(string $key, $defaults = null, array $option = [])
 {
-    /**
-     * 载入缓存数据
-     * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
-     *
-     * @param array $names
-     * @param array $option
-     * @param bool  $force
-     *
-     * @return array
-     */
-    public static function data(array $names, array $option = [], bool $force = false): array;
+    /** @var \Leevel\Cache\ICache $cache */
+    $cache = Container::singletons()->make('caches');
 
-    /**
-     * 刷新缓存数据.
-     *
-     * @param array $names
-     */
-    public static function refresh(array $names): void;
+    return $cache->get($key, $defaults, $option);
+}
+
+class cache_get
+{
 }
